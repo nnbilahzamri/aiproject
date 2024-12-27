@@ -5,7 +5,7 @@ import pickle
 
 # Load the model and scaler
 model = load_model('best_tuned_model.h5')
-with open('scaler.pkl', 'rb') as f:
+with open('./scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
 
 # Streamlit interface
