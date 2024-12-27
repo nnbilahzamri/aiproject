@@ -1,45 +1,36 @@
 import streamlit as st
-from tensorflow.keras.models import load_model
 import numpy as np
 import pickle
+from keras.models import load_model
 
-# Load the model and scaler
-model = load_model('best_tuned_model.h5')
-with open('./scaler.pkl', 'rb') as f:
+# Load the trained model
+model = load_model('diabetes_prediction_model.h5')
+
+# Load the scaler
+with open('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
 
-# Streamlit interface
-st.title("Diabetes Prediction App")
+# Streamlit UI for user input
+st.title('Diabetes Prediction')
 
-st.write("""
-Enter the values for the following features:
-- Pregnancies
-- Glucose
-- Blood Pressure
-- Skin Thickness
-- Insulin
-- BMI
-- Diabetes Pedigree Function
-- Age
-""")
+# Create input fields for the user
+glucose = st.number_input('Glucose Level', min_value=0, max_value=400)
+blood_pressure = st.number_input('Blood Pressure', min_value=0, max_value=200)
+skin_thickness = st.number_input('Skin Thickness', min_value=0, max_value=100)
+insulin = st.number_input('Insulin Level', min_value=0, max_value=900)
+bmi = st.number_input('BMI', min_value=10, max_value=60)
 
-# Collect user inputs
-features = ['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 
-            'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age']
-inputs = []
+# Collect all inputs into a list or array
+user_input = np.array([[glucose, blood_pressure, skin_thickness, insulin, bmi]])
 
-for feature in features:
-    inputs.append(st.number_input(f"{feature}", value=0.0))
+# Scale the input using the same scaler used during training
+user_input_scaled = scaler.transform(user_input)
 
-if st.button("Predict"):
-    # Convert inputs to array
-    input_data = np.array(inputs).reshape(1, -1)
-    
-    # Normalize the input using the scaler
-    normalized_data = scaler.transform(input_data)
-    
-    # Predict using the model
-    prediction = (model.predict(normalized_data) > 0.5).astype("int32")
-    result = "Diabetes" if prediction[0][0] == 1 else "No Diabetes"
-    
-    st.success(f"Prediction: {result}")
+# Make prediction
+prediction = model.predict(user_input_scaled)
+
+# Display the result
+if prediction >= 0.6:
+    st.write('The model predicts: **Diabetes**')
+else:
+    st.write('The model predicts: **No Diabetes**')
