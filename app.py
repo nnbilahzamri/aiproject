@@ -1,45 +1,45 @@
 import streamlit as st
 from keras.models import load_model
 import numpy as np
+import pickle
 
-# Load the trained model
-model = load_model('best_tuned_model.h5')
+# Load the model and scaler
+model = load_model('diabetes_prediction_model.h5')
+with open('scaler.pkl', 'rb') as f:
+    scaler = pickle.load(f)
 
-# Streamlit app title
+# Streamlit interface
 st.title("Diabetes Prediction App")
 
-# Subtitle
 st.write("""
-This app predicts the likelihood of diabetes based on user-provided health metrics.
-Enter the values for the following 8 features:
+Enter the values for the following features:
+- Pregnancies
+- Glucose
+- Blood Pressure
+- Skin Thickness
+- Insulin
+- BMI
+- Diabetes Pedigree Function
+- Age
 """)
 
-# Collect user inputs for the 8 features
-features = {
-    "Pregnancies": 0,
-    "Glucose": 0,
-    "Blood Pressure": 0,
-    "Skin Thickness": 0,
-    "Insulin": 0,
-    "BMI": 0.0,
-    "Diabetes Pedigree Function": 0.0,
-    "Age": 0
-}
-
+# Collect user inputs
+features = ['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 
+            'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age']
 inputs = []
-for feature, default_value in features.items():
-    if isinstance(default_value, int):
-        value = st.number_input(f"{feature}", value=default_value, step=1, format="%d")
-    else:
-        value = st.number_input(f"{feature}", value=default_value, format="%.2f")
-    inputs.append(value)
 
-# Predict button
+for feature in features:
+    inputs.append(st.number_input(f"{feature}", value=0.0))
+
 if st.button("Predict"):
-    # Prepare input data
+    # Convert inputs to array
     input_data = np.array(inputs).reshape(1, -1)
-    prediction = (model.predict(input_data) > 0.5).astype("int32")
+    
+    # Normalize the input using the scaler
+    normalized_data = scaler.transform(input_data)
+    
+    # Predict using the model
+    prediction = (model.predict(normalized_data) > 0.5).astype("int32")
     result = "Diabetes" if prediction[0][0] == 1 else "No Diabetes"
     
-    # Display the prediction result
     st.success(f"Prediction: {result}")
