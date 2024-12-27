@@ -4,7 +4,7 @@ import pickle
 from keras.models import load_model
 
 # Load the trained model
-model = load_model('diabetes_prediction_model.h5')
+model = load_model('best_tuned_model.h5')
 
 # Load the scaler
 with open('scaler.pkl', 'rb') as f:
