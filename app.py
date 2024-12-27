@@ -26,23 +26,24 @@ age = st.number_input('Age', min_value=1, max_value=120)
 # Collect all inputs into a list or array
 user_input = np.array([[pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, diabetes_pedigree_function, age]])
 
-# Ensure no input is empty or zero (if you want to enforce validation)
-if np.any(user_input == 0):
-    st.warning("Please provide non-zero values for all inputs.")
+# Button to trigger prediction
+if st.button('Predict'):
+    # Ensure no input is empty or zero (if you want to enforce validation)
+    if np.any(user_input == 0):
+        st.warning("Please provide non-zero values for all inputs.")
+    else:
+        try:
+            # Scale the input using the same scaler used during training
+            user_input_scaled = scaler.transform(user_input)
 
-else:
-    # Scale the input using the same scaler used during training
-    try:
-        user_input_scaled = scaler.transform(user_input)
+            # Make prediction
+            prediction = model.predict(user_input_scaled)
 
-        # Make prediction
-        prediction = model.predict(user_input_scaled)
+            # Display the result
+            if prediction >= 0.6:
+                st.write('The model predicts: **Diabetes**')
+            else:
+                st.write('The model predicts: **No Diabetes**')
 
-        # Display the result
-        if prediction >= 0.5:
-            st.write('The model predicts: **Diabetes**')
-        else:
-            st.write('The model predicts: **No Diabetes**')
-
-    except Exception as e:
-        st.error(f"Error in scaling or prediction: {str(e)}")
+        except Exception as e:
+            st.error(f"Error in scaling or prediction: {str(e)}")
