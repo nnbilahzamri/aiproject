@@ -4,7 +4,7 @@ import numpy as np
 import pickle
 
 # Load the model and scaler
-model = load_model('diabetes_prediction_model.h5')
+model = load_model('best_tuned_model.h5')
 with open('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
 
