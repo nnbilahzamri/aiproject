@@ -7,7 +7,7 @@ from keras.models import load_model
 model = load_model('best_tuned_model.h5')
 
 # Load the scaler
-with open('scaler.pkl', 'rb') as f:
+with open('./scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
 
 # Streamlit UI for user input
