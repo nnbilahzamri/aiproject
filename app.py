@@ -4,7 +4,7 @@ import pickle
 from keras.models import load_model
 
 # Load the trained model
-model = load_model('diabetes_prediction_model.h5')
+model = load_model('best_tuned_model.h5')
 
 # Load the scaler
 with open('scaler.pkl', 'rb') as f:
@@ -15,7 +15,7 @@ st.title('Diabetes Prediction')
 
 # Create input fields for all the features
 pregnancies = st.number_input('Pregnancies', min_value=0, max_value=20)
-glucose = st.number_input('Glucose Level', min_value=0, max_value=300)
+glucose = st.number_input('Glucose Level', min_value=0, max_value=400)
 blood_pressure = st.number_input('Blood Pressure', min_value=0, max_value=200)
 skin_thickness = st.number_input('Skin Thickness', min_value=0, max_value=100)
 insulin = st.number_input('Insulin Level', min_value=0, max_value=900)
