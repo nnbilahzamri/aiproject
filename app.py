@@ -47,7 +47,7 @@ for key, value in default_values.items():
     if key not in st.session_state:
         st.session_state[key] = value
 
-# Input fields, updated to reflect the session state after the reset
+# Input fields
 pregnancies = st.text_input('Pregnancies', value=str(st.session_state['pregnancies']))
 glucose = st.text_input('Glucose Level', value=str(st.session_state['glucose']))
 blood_pressure = st.text_input('Blood Pressure', value=str(st.session_state['blood_pressure']))
@@ -105,17 +105,3 @@ if st.session_state['prediction_made']:
         for key in default_values.keys():
             st.session_state[key] = default_values[key]
         st.session_state['prediction_made'] = False
-
-        # After resetting, Streamlit will automatically update the input fields
-        # These inputs are directly tied to session state and will reflect the reset values
-
-# Reinitialize the input fields (These will reflect the reset values automatically)
-pregnancies = st.text_input('Pregnancies', value=str(st.session_state['pregnancies']), key="pregnancies")
-glucose = st.text_input('Glucose Level', value=str(st.session_state['glucose']), key="glucose")
-blood_pressure = st.text_input('Blood Pressure', value=str(st.session_state['blood_pressure']), key="blood_pressure")
-skin_thickness = st.text_input('Skin Thickness', value=str(st.session_state['skin_thickness']), key="skin_thickness")
-insulin = st.text_input('Insulin Level', value=str(st.session_state['insulin']), key="insulin")
-bmi = st.text_input('BMI', value=str(st.session_state['bmi']), key="bmi")
-diabetes_pedigree_function = st.text_input('Diabetes Pedigree Function', value=str(st.session_state['diabetes_pedigree_function']), key="diabetes_pedigree_function")
-age = st.text_input('Age', value=str(st.session_state['age']), key="age")
-
