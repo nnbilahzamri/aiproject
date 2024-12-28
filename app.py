@@ -47,7 +47,7 @@ for key, value in default_values.items():
     if key not in st.session_state:
         st.session_state[key] = value
 
-# Input fields
+# Input fields, updated to reflect the session state after the reset
 pregnancies = st.text_input('Pregnancies', value=str(st.session_state['pregnancies']))
 glucose = st.text_input('Glucose Level', value=str(st.session_state['glucose']))
 blood_pressure = st.text_input('Blood Pressure', value=str(st.session_state['blood_pressure']))
@@ -56,6 +56,7 @@ insulin = st.text_input('Insulin Level', value=str(st.session_state['insulin']))
 bmi = st.text_input('BMI', value=str(st.session_state['bmi']))
 diabetes_pedigree_function = st.text_input('Diabetes Pedigree Function', value=str(st.session_state['diabetes_pedigree_function']))
 age = st.text_input('Age', value=str(st.session_state['age']))
+
 
 # Parse inputs and handle errors
 try:
