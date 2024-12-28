@@ -56,14 +56,14 @@ if st.button('Predict'):
         if prediction >= 0.7:
             st.markdown(
                 '<div style="background-color: #f9e79f; padding: 15px; border-radius: 10px; color: black;">'
-                '<b>The model predicts: **Diabetes**</b>'
+                '<b>The model predicts: Diabetes</b>'
                 '</div>',
                 unsafe_allow_html=True,
             )
         else:
             st.markdown(
                 '<div style="background-color: #d5f5e3; padding: 15px; border-radius: 10px; color: black;">'
-                '<b>The model predicts: **No Diabetes**</b>'
+                '<b>The model predicts: No Diabetes</b>'
                 '</div>',
                 unsafe_allow_html=True,
             )
