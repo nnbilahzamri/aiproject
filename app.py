@@ -30,7 +30,7 @@ st.markdown("""
 **Note:** *Pre-filled value is the minimum value for each field.*
 """)
 
-# Create input fields for all the features
+# Create input fields for all the features without (+/-) buttons
 pregnancies = st.number_input('Pregnancies', min_value=0, value=0, format='%d', step=None)
 glucose = st.number_input('Glucose Level', min_value=60, max_value=200, value=60, step=None)
 blood_pressure = st.number_input('Blood Pressure', min_value=50, max_value=200, value=50, step=None)
@@ -43,8 +43,12 @@ age = st.number_input('Age', min_value=1, max_value=100, value=1, step=None)
 # Collect all inputs into a list or array
 user_input = np.array([[pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, diabetes_pedigree_function, age]])
 
+# Initialize a session state to manage prediction status
+if 'prediction_made' not in st.session_state:
+    st.session_state['prediction_made'] = False
+
 # Button to trigger prediction
-if st.button('Predict'):
+if st.button('Predict') and not st.session_state['prediction_made']:
     try:
         # Scale the input using the same scaler used during training
         user_input_scaled = scaler.transform(user_input)
@@ -56,17 +60,27 @@ if st.button('Predict'):
         if prediction >= 0.7:
             st.markdown(
                 '<div style="background-color: #f9e79f; padding: 15px; border-radius: 10px; color: black;">'
-                '<b>The model predicts: Diabetes</b>'
+                '<b>The model predicts: **Diabetes**</b>'
                 '</div>',
                 unsafe_allow_html=True,
             )
         else:
             st.markdown(
                 '<div style="background-color: #d5f5e3; padding: 15px; border-radius: 10px; color: black;">'
-                '<b>The model predicts: No Diabetes</b>'
+                '<b>The model predicts: **No Diabetes**</b>'
                 '</div>',
                 unsafe_allow_html=True,
             )
 
+        # Set session state to indicate a prediction has been made
+        st.session_state['prediction_made'] = True
+
     except Exception as e:
         st.error(f"Error in scaling or prediction: {str(e)}")
+
+# Show "Predict New" button if a prediction has been made
+if st.session_state['prediction_made']:
+    if st.button('Predict New'):
+        # Reset the session state and refresh the page
+        st.session_state['prediction_made'] = False
+        st.experimental_rerun()
