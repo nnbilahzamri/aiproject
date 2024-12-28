@@ -30,13 +30,13 @@ st.markdown("""
 
 # Create input fields for all the features
 pregnancies = st.number_input('Pregnancies', min_value=0, step=1, value=0, format='%d')
-glucose = st.number_input('Glucose Level', min_value=60, max_value=200, step=1, value=0)
-blood_pressure = st.number_input('Blood Pressure', min_value=50, max_value=200, step=1, value=0)
-skin_thickness = st.number_input('Skin Thickness', min_value=10, max_value=100, step=1, value=0)
-insulin = st.number_input('Insulin Level', min_value=35, max_value=450, step=1, value=0)
-bmi = st.number_input('BMI', min_value=18.5, max_value=60.0, value=0.0, step=0.1, format="%.1f")
+glucose = st.number_input('Glucose Level', min_value=60, max_value=200, step=1, value=60)
+blood_pressure = st.number_input('Blood Pressure', min_value=50, max_value=200, step=1, value=50)
+skin_thickness = st.number_input('Skin Thickness', min_value=10, max_value=100, step=1, value=10)
+insulin = st.number_input('Insulin Level', min_value=35, max_value=450, step=1, value=35)
+bmi = st.number_input('BMI', min_value=18.5, max_value=60.0, value=18.5, step=0.1, format="%.1f")
 diabetes_pedigree_function = st.number_input('Diabetes Pedigree Function', min_value=0.0, max_value=2.0, value=0.0, step=0.001, format="%.3f")
-age = st.number_input('Age', min_value=1, max_value=120, step=1, value=1)
+age = st.number_input('Age', min_value=1, max_value=100, step=1, value=1)
 
 # Collect all inputs into a list or array
 user_input = np.array([[pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, diabetes_pedigree_function, age]])
