@@ -23,20 +23,22 @@ st.markdown("""
 | **Blood Pressure**         | Diastolic blood pressure in mmHg (50 to 200).      | `70`, `80`, `120`   |
 | **Skin Thickness**         | Skin fold thickness in mm (10 to 100).             | `20`, `35`, `50`    |
 | **Insulin Level**          | Serum insulin in μU/ml (35 to 450).                | `90`, `120`, `200`  |
-| **BMI**                    | Body Mass Index (18.5 to 60).        | `24.5`, `33.6`      |
-| **Diabetes Pedigree Function** | Genetic risk factor (0 to 2.0). | `0.351`, `0.627`    |
+| **BMI**                    | Body Mass Index (18.5 to 60).                      | `24.5`, `33.6`      |
+| **Diabetes Pedigree Function** | Genetic risk factor (0 to 2.0).               | `0.351`, `0.627`    |
 | **Age**                    | Age in years (1 to 100).                          | `25`, `45`, `60`    |
+
+**Note:** *Pre-filled value is the minimum value for each field.*
 """)
 
 # Create input fields for all the features
-pregnancies = st.number_input('Pregnancies', min_value=0, step=1, value=0, format='%d')
-glucose = st.number_input('Glucose Level', min_value=60, max_value=200, step=1, value=60)
-blood_pressure = st.number_input('Blood Pressure', min_value=50, max_value=200, step=1, value=50)
-skin_thickness = st.number_input('Skin Thickness', min_value=10, max_value=100, step=1, value=10)
-insulin = st.number_input('Insulin Level', min_value=35, max_value=450, step=1, value=35)
-bmi = st.number_input('BMI', min_value=18.5, max_value=60.0, value=18.5, step=0.1, format="%.1f")
-diabetes_pedigree_function = st.number_input('Diabetes Pedigree Function', min_value=0.0, max_value=2.0, value=0.0, step=0.001, format="%.3f")
-age = st.number_input('Age', min_value=1, max_value=100, step=1, value=1)
+pregnancies = st.number_input('Pregnancies', min_value=0, value=0, format='%d', step=None)
+glucose = st.number_input('Glucose Level', min_value=60, max_value=200, value=60, step=None)
+blood_pressure = st.number_input('Blood Pressure', min_value=50, max_value=200, value=50, step=None)
+skin_thickness = st.number_input('Skin Thickness', min_value=10, max_value=100, value=10, step=None)
+insulin = st.number_input('Insulin Level', min_value=35, max_value=450, value=35, step=None)
+bmi = st.number_input('BMI', min_value=18.5, max_value=60.0, value=18.5, format="%.1f", step=None)
+diabetes_pedigree_function = st.number_input('Diabetes Pedigree Function', min_value=0.0, max_value=2.0, value=0.0, format="%.3f", step=None)
+age = st.number_input('Age', min_value=1, max_value=100, value=1, step=None)
 
 # Collect all inputs into a list or array
 user_input = np.array([[pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, diabetes_pedigree_function, age]])
@@ -52,9 +54,19 @@ if st.button('Predict'):
 
         # Display the result
         if prediction >= 0.7:
-            st.success('The model predicts: **Diabetes**')
+            st.markdown(
+                '<div style="background-color: #f9e79f; padding: 15px; border-radius: 10px; color: black;">'
+                '<b>The model predicts: **Diabetes**</b>'
+                '</div>',
+                unsafe_allow_html=True,
+            )
         else:
-            st.success('The model predicts: **No Diabetes**')
+            st.markdown(
+                '<div style="background-color: #d5f5e3; padding: 15px; border-radius: 10px; color: black;">'
+                '<b>The model predicts: **No Diabetes**</b>'
+                '</div>',
+                unsafe_allow_html=True,
+            )
 
     except Exception as e:
         st.error(f"Error in scaling or prediction: {str(e)}")
