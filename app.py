@@ -40,7 +40,7 @@ if st.button('Predict'):
             prediction = model.predict(user_input_scaled)
 
             # Display the result
-            if prediction >= 0.5:
+            if prediction >= 0.4:
                 st.write('The model predicts: **Diabetes**')
             else:
                 st.write('The model predicts: **No Diabetes**')
