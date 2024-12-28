@@ -107,11 +107,11 @@ if st.session_state['prediction_made']:
         st.session_state['prediction_made'] = False
 
         # Reinitialize the input fields after resetting session state
-        pregnancies = st.text_input('Pregnancies', value=str(st.session_state['pregnancies']))
-        glucose = st.text_input('Glucose Level', value=str(st.session_state['glucose']))
-        blood_pressure = st.text_input('Blood Pressure', value=str(st.session_state['blood_pressure']))
-        skin_thickness = st.text_input('Skin Thickness', value=str(st.session_state['skin_thickness']))
-        insulin = st.text_input('Insulin Level', value=str(st.session_state['insulin']))
-        bmi = st.text_input('BMI', value=str(st.session_state['bmi']))
-        diabetes_pedigree_function = st.text_input('Diabetes Pedigree Function', value=str(st.session_state['diabetes_pedigree_function']))
-        age = st.text_input('Age', value=str(st.session_state['age']))
+        pregnancies = st.text_input('Pregnancies', value=str(st.session_state['pregnancies']), key="pregnancies")
+        glucose = st.text_input('Glucose Level', value=str(st.session_state['glucose']), key="glucose")
+        blood_pressure = st.text_input('Blood Pressure', value=str(st.session_state['blood_pressure']), key="blood_pressure")
+        skin_thickness = st.text_input('Skin Thickness', value=str(st.session_state['skin_thickness']), key="skin_thickness")
+        insulin = st.text_input('Insulin Level', value=str(st.session_state['insulin']), key="insulin")
+        bmi = st.text_input('BMI', value=str(st.session_state['bmi']), key="bmi")
+        diabetes_pedigree_function = st.text_input('Diabetes Pedigree Function', value=str(st.session_state['diabetes_pedigree_function']), key="diabetes_pedigree_function")
+        age = st.text_input('Age', value=str(st.session_state['age']), key="age")
