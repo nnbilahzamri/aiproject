@@ -30,25 +30,44 @@ st.markdown("""
 **Note:** *Pre-filled value is the minimum value for each field.*
 """)
 
-# Create input fields for all the features without (+/-) buttons
-pregnancies = st.number_input('Pregnancies', min_value=0, value=0, format='%d', step=None)
-glucose = st.number_input('Glucose Level', min_value=60, max_value=200, value=60, step=None)
-blood_pressure = st.number_input('Blood Pressure', min_value=50, max_value=200, value=50, step=None)
-skin_thickness = st.number_input('Skin Thickness', min_value=10, max_value=100, value=10, step=None)
-insulin = st.number_input('Insulin Level', min_value=35, max_value=450, value=35, step=None)
-bmi = st.number_input('BMI', min_value=18.5, max_value=60.0, value=18.5, format="%.1f", step=None)
-diabetes_pedigree_function = st.number_input('Diabetes Pedigree Function', min_value=0.0, max_value=2.0, value=0.0, format="%.3f", step=None)
-age = st.number_input('Age', min_value=1, max_value=100, value=1, step=None)
+# Initialize session state for inputs
+default_values = {
+    'pregnancies': 0,
+    'glucose': 60,
+    'blood_pressure': 50,
+    'skin_thickness': 10,
+    'insulin': 35,
+    'bmi': 18.5,
+    'diabetes_pedigree_function': 0.0,
+    'age': 1,
+    'prediction_made': False,
+}
 
-# Collect all inputs into a list or array
-user_input = np.array([[pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, diabetes_pedigree_function, age]])
+for key, value in default_values.items():
+    if key not in st.session_state:
+        st.session_state[key] = value
 
-# Initialize a session state to manage prediction status
-if 'prediction_made' not in st.session_state:
-    st.session_state['prediction_made'] = False
+# Input fields
+pregnancies = st.text_input('Pregnancies', value=str(st.session_state['pregnancies']))
+glucose = st.text_input('Glucose Level', value=str(st.session_state['glucose']))
+blood_pressure = st.text_input('Blood Pressure', value=str(st.session_state['blood_pressure']))
+skin_thickness = st.text_input('Skin Thickness', value=str(st.session_state['skin_thickness']))
+insulin = st.text_input('Insulin Level', value=str(st.session_state['insulin']))
+bmi = st.text_input('BMI', value=str(st.session_state['bmi']))
+diabetes_pedigree_function = st.text_input('Diabetes Pedigree Function', value=str(st.session_state['diabetes_pedigree_function']))
+age = st.text_input('Age', value=str(st.session_state['age']))
+
+# Parse inputs and handle errors
+try:
+    user_input = np.array([[int(pregnancies), int(glucose), int(blood_pressure),
+                            int(skin_thickness), int(insulin), float(bmi),
+                            float(diabetes_pedigree_function), int(age)]])
+except ValueError:
+    st.warning("Please enter valid numerical values for all fields.")
+    st.stop()
 
 # Button to trigger prediction
-if st.button('Predict') and not st.session_state['prediction_made']:
+if st.button('Predict'):
     try:
         # Scale the input using the same scaler used during training
         user_input_scaled = scaler.transform(user_input)
@@ -72,7 +91,7 @@ if st.button('Predict') and not st.session_state['prediction_made']:
                 unsafe_allow_html=True,
             )
 
-        # Set session state to indicate a prediction has been made
+        # Update session state
         st.session_state['prediction_made'] = True
 
     except Exception as e:
@@ -81,6 +100,7 @@ if st.button('Predict') and not st.session_state['prediction_made']:
 # Show "Predict New" button if a prediction has been made
 if st.session_state['prediction_made']:
     if st.button('Predict New'):
-        # Reset the session state and refresh the page
+        # Reset session state values to defaults
+        for key in default_values.keys():
+            st.session_state[key] = default_values[key]
         st.session_state['prediction_made'] = False
-        st.experimental_rerun()
